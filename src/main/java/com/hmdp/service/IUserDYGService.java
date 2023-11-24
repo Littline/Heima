@@ -10,9 +10,10 @@ import com.hmdp.dto.LoginFormDTO;
 import com.hmdp.dto.Result;
 import com.hmdp.entity.User;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSession;
 
 public interface IUserDYGService  extends IService<UserDYG>{
-    Result login1(String email, String password, HttpSession session);
+    Result login1(String email, String password, HttpSession session, HttpServletResponse response);
 }

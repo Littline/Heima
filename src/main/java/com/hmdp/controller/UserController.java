@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * <p>
@@ -55,14 +57,11 @@ public class UserController {
         return userService.login(loginForm, session);
     }
     @PostMapping("/login1")
-    public Result login1( @RequestParam String email,
-                          @RequestParam String password,
-                          HttpSession session){
-//        String receiveMessage="Received email: " + email + ", password: " + password;
-//        String sessionMessage=session.toString();
-//        userDYGService.login1(email,password,session);
-        // 实现登录功能
-        return userDYGService.login1(email,password,session);
+    public Result login1( @RequestBody Map<String, String> requestBody,
+                          HttpSession session,
+                          HttpServletResponse response){
+
+        return userDYGService.login1(requestBody.get("email"),requestBody.get("password"),session,response);
     }
 
     /**

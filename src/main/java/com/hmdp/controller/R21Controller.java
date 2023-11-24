@@ -10,36 +10,55 @@ import com.hmdp.service.IBlogService;
 import com.hmdp.service.IOPCUnitService;
 import com.hmdp.utils.SystemConstants;
 import com.hmdp.utils.UserHolder;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static com.hmdp.utils.RedisConstants.LOGIN_USER_KEY;
 
 @RestController
 @RequestMapping("/r21")
 @CrossOrigin(origins = "http://192.168.46.188:3000", allowCredentials = "true", allowedHeaders = {"content-type"})
-//@CrossOrigin(origins = "*")//主要作用
 public class R21Controller {
     @Resource
     private IOPCUnitService opcUnitService;
 
-//    @CrossOrigin(origins = "http://192.168.46.190:3000", methods = {RequestMethod.OPTIONS})
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @CrossOrigin(origins = "http://192.168.46.188:81", methods = {RequestMethod.OPTIONS})
     @GetMapping
-    //跨域请求//基本没什么用了
     public ResponseEntity<Void> handleOptions() {
         System.out.println("options");
         return ResponseEntity.ok().build();
     }
     @GetMapping("/all")
-//    @CrossOrigin(origins = "http://192.168.46.190:3000")
-    @CrossOrigin(origins = "http://192.168.46.188:81")
-    public Result queryOPCUnitAll() {
-        List<OPCUnit> allOpcUnits = opcUnitService.list();
-        return Result.ok(allOpcUnits);
+    public Result queryOPCUnitAll(@RequestHeader(name = "Authorization", required = false) String authorization, HttpSession session) {
+        System.out.println("Authorization: " + authorization);
+        if(authorization!=null){
+            HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+            Map<String,String> map= hashOperations.entries("token");
+            stringRedisTemplate.expire("token", 30, TimeUnit.MINUTES);
+            if(!map.containsKey(authorization)){
+                return Result.fail("未验证请求");
+            }
+            List<OPCUnit> allOpcUnits = opcUnitService.list();
+            return Result.ok(allOpcUnits);
+        }else{
+            return Result.fail("未验证请求");
+        }
+
+
     }
     @GetMapping("/part/{id}")
     public Result queryOPCUnitByPart(@PathVariable("id") Long id,@RequestParam(value = "current", defaultValue = "1") Integer current) {
