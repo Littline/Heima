@@ -9,6 +9,7 @@ import com.hmdp.dto.LoginFormDTO;
 import com.hmdp.dto.Result;
 import com.hmdp.dto.UserDTO;
 import com.hmdp.entity.User;
+import com.hmdp.entity.UserDYG;
 import com.hmdp.mapper.UserMapper;
 import com.hmdp.service.IUserService;
 import com.hmdp.utils.RegexUtils;
@@ -42,6 +43,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private StringRedisTemplate stringRedisTemplate;
 
 
+
     @Override
     public Result sedCode(String phone, HttpSession session) {
         //1. 校验手机号
@@ -53,7 +55,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //3. 符合，生成验证码
         String code = RandomUtil.randomNumbers(6);
         //4. 保存验证码到session
-        session.setAttribute("code",code);
+        //session.setAttribute("code",code);
+        stringRedisTemplate.opsForValue().set(LOGIN_CODE_KEY + phone, code, LOGIN_CODE_TTL, TimeUnit.MINUTES);
         //5. 发送验证码
         log.debug("发送短信验证码成功，验证码:{}",code);
         //返回ok

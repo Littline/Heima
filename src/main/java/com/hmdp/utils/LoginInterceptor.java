@@ -1,6 +1,7 @@
 package com.hmdp.utils;
 
 import com.hmdp.dto.UserDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
 //        //1. 获取session
 //        HttpSession session = request.getSession();
 //        //2.获取session中的用户

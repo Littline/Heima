@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author 虎哥
@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("tb_user")
-public class User implements Serializable {
+@TableName("users")
+public class UserDYG implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class User implements Serializable {
     /**
      * 手机号码
      */
-    private String phone;
+    private String account;
 
     /**
      * 密码，加密存储
@@ -45,24 +45,9 @@ public class User implements Serializable {
     /**
      * 昵称，默认是随机字符
      */
-    private String nickName;
+    private int role;
 
-    /**
-     * 用户头像
-     */
-    private String icon = "";
 
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-//    private String name;
-//    private int age;
 
 
 }

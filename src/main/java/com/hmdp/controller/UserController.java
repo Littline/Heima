@@ -5,6 +5,7 @@ import com.hmdp.dto.LoginFormDTO;
 import com.hmdp.dto.Result;
 import com.hmdp.dto.UserDTO;
 import com.hmdp.entity.UserInfo;
+import com.hmdp.service.IUserDYGService;
 import com.hmdp.service.IUserInfoService;
 import com.hmdp.service.IUserService;
 import com.hmdp.utils.UserHolder;
@@ -31,6 +32,9 @@ public class UserController {
     private IUserService userService;
 
     @Resource
+    private IUserDYGService userDYGService;
+
+    @Resource
     private IUserInfoService userInfoService;
 
     /**
@@ -49,6 +53,16 @@ public class UserController {
     public Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
         // 实现登录功能
         return userService.login(loginForm, session);
+    }
+    @PostMapping("/login1")
+    public Result login1( @RequestParam String email,
+                          @RequestParam String password,
+                          HttpSession session){
+//        String receiveMessage="Received email: " + email + ", password: " + password;
+//        String sessionMessage=session.toString();
+//        userDYGService.login1(email,password,session);
+        // 实现登录功能
+        return userDYGService.login1(email,password,session);
     }
 
     /**
