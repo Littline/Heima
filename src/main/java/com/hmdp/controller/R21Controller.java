@@ -28,7 +28,7 @@ import static com.hmdp.utils.RedisConstants.LOGIN_USER_KEY;
 
 @RestController
 @RequestMapping("/r21")
-@CrossOrigin(origins = "http://192.168.46.188:3000", allowCredentials = "true", allowedHeaders = {"content-type"})
+@CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = {"content-type"})
 public class R21Controller {
     @Resource
     private IOPCUnitService opcUnitService;
@@ -36,7 +36,7 @@ public class R21Controller {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @CrossOrigin(origins = "http://192.168.46.188:81", methods = {RequestMethod.OPTIONS})
+    @CrossOrigin(origins = "*", methods = {RequestMethod.OPTIONS})
     @GetMapping
     public ResponseEntity<Void> handleOptions() {
         System.out.println("options");
