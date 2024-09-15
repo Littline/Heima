@@ -45,15 +45,41 @@ public class ICljInfoServiceImpl extends ServiceImpl<CljInfoMapper, CljInfo> imp
         }
     }
     @Override
+    public boolean writeWeekInfo2Redis(NodeDTO nodeDTO){
+        try {
+            String key =  "clj_node_week_"+nodeDTO.getId();
+            List<String> existingKeys = redisTemplate.opsForList().range("NodeDTOKeys_Week", 0, -1);
+            if (existingKeys != null && existingKeys.contains(key)) {
+                redisTemplate.opsForValue().set(key, nodeDTO, Duration.ofMinutes(60));
+                return true;
+            }
+            redisTemplate.opsForList().rightPush("NodeDTOKeys_Week", key);
+            redisTemplate.opsForValue().set(key, nodeDTO, Duration.ofMinutes(60));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Override
     public NodeDTO getNodeDTOFromRedis(Long id) {
-
         String key =  "clj_node_"+id;
         NodeDTO nodeDTO = (NodeDTO) redisTemplate.opsForValue().get(key);
         List nodeDTOKeys = redisTemplate.opsForList().range("NodeDTOKeys", 0, -1);
         if(id==1L){
             System.out.println(nodeDTOKeys);
         }
+        return nodeDTO;
+    }
 
+    @Override
+    public NodeDTO getNodeWeekFromRedis(Long id){
+        String key =  "clj_node_week_"+id;
+        NodeDTO nodeDTO = (NodeDTO) redisTemplate.opsForValue().get(key);
+        List nodeDTOKeys = redisTemplate.opsForList().range("NodeDTOKeys_Week", 0, -1);
+        if(id==1L){
+            System.out.println(nodeDTOKeys);
+        }
         return nodeDTO;
     }
     @Override

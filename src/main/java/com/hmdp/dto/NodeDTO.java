@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class NodeDTO implements Serializable {
@@ -22,5 +23,9 @@ public class NodeDTO implements Serializable {
     private Double weight;//实时重量
     private Double defaultWeight;//重量阈值
     private LocalDateTime updateTime;
+    private List<Integer> last7True;
+    private List<Integer> last7False;
+    private List<Integer> last7Warn;
+    private List<Integer> last7Box;
 
 }

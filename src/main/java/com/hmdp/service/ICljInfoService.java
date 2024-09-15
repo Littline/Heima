@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 public interface ICljInfoService extends IService<CljInfo> {
     boolean writeInfo2Redis(NodeDTO nodeDTO);
+    boolean writeWeekInfo2Redis(NodeDTO nodeDTO);
     NodeDTO getNodeDTOFromRedis(Long id);
+    NodeDTO getNodeWeekFromRedis(Long id);
     CljInfo findByNameAndNumber(String name, String number);
 }
