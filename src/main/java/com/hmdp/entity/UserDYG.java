@@ -46,6 +46,7 @@ public class UserDYG implements Serializable {
      * 昵称，默认是随机字符
      */
     private int role;
+    private String cljIds;
 
 
 

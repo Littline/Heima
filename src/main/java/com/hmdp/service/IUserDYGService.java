@@ -16,4 +16,5 @@ import javax.servlet.http.HttpSession;
 
 public interface IUserDYGService  extends IService<UserDYG>{
     Result login1(String email, String password, HttpSession session, HttpServletResponse response);
+    UserDYG getUserByUsername(String username) ;
 }

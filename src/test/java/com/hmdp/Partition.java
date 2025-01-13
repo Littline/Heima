@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 //先找到最基础解，然后逐次倒退，deque的size逐步减小
 @Slf4j
 public class Partition {
@@ -96,5 +94,34 @@ public class Partition {
         } catch (NumberFormatException e) {
             return false; // handle cases where parsing fails
         }
+    }
+
+    @Test
+    public int[] findPartition(int[][] allArrays,int target){
+        Arrays.sort(allArrays,(pair1,pair2)->{
+            return pair1[0]-pair2[0];
+        });
+        int[] result=new int[2];
+        int mid;
+        int left=0;
+        int right=allArrays.length-1;
+        while(left<right){
+            mid=(left+right)/2;
+            if(target<allArrays[mid][0]){
+                right=mid;
+            }else if(target>allArrays[mid][1]){
+                left=mid;
+            }else if(target>=allArrays[mid][0]&&target<=allArrays[mid][1]){
+                result=allArrays[mid];
+                return result;
+            }
+        }
+//        for(int i=0;i<allArrays.length;i++){
+//            if(target>=allArrays[i][0]&&target<=allArrays[i][1]){
+//                result=allArrays[i];
+//                return result;
+//            }
+//        }
+        return result;
     }
 }

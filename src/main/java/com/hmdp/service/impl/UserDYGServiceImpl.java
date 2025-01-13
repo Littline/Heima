@@ -3,6 +3,7 @@ package com.hmdp.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmdp.dto.Result;
 import com.hmdp.dto.UserDTO;
@@ -36,6 +37,12 @@ public class UserDYGServiceImpl extends ServiceImpl<UserDYGMapper, UserDYG> impl
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    public UserDYG getUserByUsername(String username) {
+        QueryWrapper<UserDYG> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account", username);  // 根据 username 字段查找
+
+        return this.getOne(queryWrapper);  // 返回查询到的第一条记录
+    }
 
     @Override
     public Result login1(String email, String password, HttpSession session, HttpServletResponse response){
@@ -64,8 +71,9 @@ public class UserDYGServiceImpl extends ServiceImpl<UserDYGMapper, UserDYG> impl
         stringRedisTemplate.expire("token", LOGIN_USER_TTL, TimeUnit.MINUTES);
 
         Cookie sessionCookie = new Cookie("account", token);
-        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition, User-Account");
         response.setHeader("Content-Disposition", token);
+        response.setHeader("User-Account", account);
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.addCookie(sessionCookie);
         //如果用户名密码正常，则存入redis，格式为account->token:level

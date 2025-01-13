@@ -67,7 +67,7 @@ public class ICljInfoServiceImpl extends ServiceImpl<CljInfoMapper, CljInfo> imp
         NodeDTO nodeDTO = (NodeDTO) redisTemplate.opsForValue().get(key);
         List nodeDTOKeys = redisTemplate.opsForList().range("NodeDTOKeys", 0, -1);
         if(id==1L){
-            System.out.println(nodeDTOKeys);
+            System.out.println("test is: "+nodeDTOKeys);
         }
         return nodeDTO;
     }
@@ -78,7 +78,7 @@ public class ICljInfoServiceImpl extends ServiceImpl<CljInfoMapper, CljInfo> imp
         NodeDTO nodeDTO = (NodeDTO) redisTemplate.opsForValue().get(key);
         List nodeDTOKeys = redisTemplate.opsForList().range("NodeDTOKeys_Week", 0, -1);
         if(id==1L){
-            System.out.println(nodeDTOKeys);
+            System.out.println("week test is: "+nodeDTOKeys);
         }
         return nodeDTO;
     }
